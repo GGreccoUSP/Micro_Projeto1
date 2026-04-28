@@ -1,0 +1,107 @@
+; Giovanne Tomaszewski Grecco
+; n° USP - 16228852
+
+ORG 0000h
+
+START:
+
+; controle do motor 
+; (seta sentido inicial como horário)
+    SETB P3.0
+    CLR  P3.1
+
+; LED7 = 1 : sentido horário
+    SETB P1.7 
+
+; Timer1 como contador 
+    MOV TMOD, #50H
+    SETB TR1
+
+; registro de estado lógico do switch
+    SETB 20h        
+
+MAIN:
+
+    JB P2.0, REGISTRO
+
+; ao pressionar a chave
+    JB 20h, TOGGLE 
+    SJMP CONTINUA        
+
+TOGGLE:
+; inverte o sentido de rotação do motor
+; ao acionar SW0
+    ACALL SENTIDO         
+    CLR 20h               
+    SJMP CONTINUA
+
+; registra o estado lógico do switch
+; quando SW0 = 1 (botão 0 ativado)
+REGISTRO:
+    SETB 20h             
+
+CONTINUA:
+
+; registro da contagem de voltas
+    MOV A, TL1
+
+; limitar a contagem de 0 a 9 verificando
+; o resto da divisão por 10
+    MOV B, #0AH
+    DIV AB
+    MOV A, B
+
+; gravação do estado do LED7
+    MOV C, P1.7
+
+; manutenção do display de 7 segmentos
+    MOV DPTR, #LIST
+    MOVC A, @A+DPTR
+    MOV P1, A
+
+; LED7 volta ao estado inicial
+    MOV P1.7, C
+
+    SJMP MAIN
+
+; inversão no sentido de rotação do motor
+SENTIDO:
+    CPL P3.0
+    CPL P3.1
+
+; atualiza LED7 de acordo com
+; o sentido de rotação do motor
+    MOV C, P3.0     ; "comparador"
+    MOV P1.7, C
+
+; reinicia contagem quando o sentido
+; é invertido	
+    CLR TR1       
+    MOV TL1, #00H
+    MOV TH1, #00H
+    SETB TR1
+
+    RET
+
+; tabela do display de 7 segmentos
+LIST:
+    DB 0C0H
+    DB 0F9H
+    DB 0A4H
+    DB 0B0H
+    DB 099H
+    DB 092H
+    DB 082H
+    DB 0F8H
+    DB 080H
+    DB 090H
+
+END
+
+; O temporizador interno atua com o 
+; pulso de clock proveniente do          ; oscilador presente
+; no microcontrolador ou                 ; microprocessador. 
+; Já o contador por evento externo
+; atua, como o nome sugere, a partir
+; de eventos externos, como por exemplo
+; o pulso do sinal de um sensor. Note    ; que este último fora o utilizado na    ; elaboração do código deste checkpoint.
