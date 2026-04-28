@@ -19,6 +19,7 @@ Além disso, algumas considerações a serem feitas a respeito do código final:
 
 Por fim, vale ressaltar que a única mudança feita em relação ao checkpoint anterior foi de implementar a entrada P1.7 do display de 7 segmentos no código, esse que se encontra no arquivo src.
 
+
 -- Giovanne Tomaszewski Grecco
 
 -- n° usp: 16228852
