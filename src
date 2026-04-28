@@ -99,9 +99,13 @@ LIST:
 END
 
 ; O temporizador interno atua com o 
-; pulso de clock proveniente do          ; oscilador presente
-; no microcontrolador ou                 ; microprocessador. 
+; pulso de clock proveniente do          
+; oscilador presente
+; no microcontrolador ou                 
+; microprocessador. 
 ; Já o contador por evento externo
 ; atua, como o nome sugere, a partir
 ; de eventos externos, como por exemplo
-; o pulso do sinal de um sensor. Note    ; que este último fora o utilizado na    ; elaboração do código deste checkpoint.
+; o pulso do sinal de um sensor. Note    
+; que este último fora o utilizado na    
+; elaboração do código deste checkpoint.
